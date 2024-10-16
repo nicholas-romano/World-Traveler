@@ -8,8 +8,6 @@ import Form from "./components/Form";
 import SpinnerFullPage from "./components/SpinnerFullPage";
 
 const Homepage = lazy(() => import("./pages/Homepage"));
-const Product = lazy(() => import("./pages/Product"));
-const Pricing = lazy(() => import("./pages/Pricing"));
 const AppLayout = lazy(() => import("./pages/AppLayout"));
 const PageNotFound = lazy(() => import("./pages/PageNotFound"));
 
@@ -20,8 +18,6 @@ function App() {
         <Suspense fallback={<SpinnerFullPage />}>
           <Routes>
             <Route index element={<Homepage />} />
-            <Route path="product" element={<Product />} />
-            <Route path="pricing" element={<Pricing />} />
             <Route path="app" element={<AppLayout />}>
               <Route index element={<Navigate replace to="cities" />} />
               <Route path="cities" element={<CityList />} />

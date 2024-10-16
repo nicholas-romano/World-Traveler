@@ -18,14 +18,14 @@ function CityList() {
 
   if (!cities.length) {
     return (
-      <Message message="Add your first city by clicking on a city on the map." />
+      <Message message="Add your first city by clicking on one on the map." />
     );
   }
 
   return (
     <ul className={styles.cityList}>
       {cities.map((city) => (
-        <CityItem city={city} key={city.id} />
+        <CityItem key={city.id} city={city} />
       ))}
     </ul>
   );

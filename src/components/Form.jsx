@@ -2,6 +2,7 @@
 // "https://api.bigdatacloud.net/data/reverse-geocode-client?latitude=0&longitude=0"
 
 import { useEffect, useState } from "react";
+import { v4 as uuidv4 } from "uuid";
 import Button from "./Button";
 import styles from "./Form.module.css";
 import BackButton from "./BackButton";
@@ -71,6 +72,7 @@ function Form() {
     if (!cityName || !date) return;
 
     const newCity = {
+      id: uuidv4(),
       cityName,
       country,
       emoji,
@@ -108,11 +110,6 @@ function Form() {
 
       <div className={styles.row}>
         <label htmlFor="date">When did you go to {cityName}?</label>
-        {/* <input
-          id="date"
-          onChange={(e) => setDate(e.target.value)}
-          value={date}
-        /> */}
         <DatePicker
           id="date"
           onChange={(date) => setDate(date)}

@@ -18,7 +18,7 @@ function CountryList() {
 
   if (!cities.length) {
     return (
-      <Message message="Add your first city by clicking on a city on the map." />
+      <Message message="Add your first country by clicking on one on the map." />
     );
   }
 

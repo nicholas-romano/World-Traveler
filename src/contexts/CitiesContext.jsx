@@ -6,8 +6,7 @@ import {
   useCallback,
 } from "react";
 import PropTypes from "prop-types";
-
-const BASE_URL = "http://localhost:8000";
+import { useLocalStorageState } from "../../data/useLocalStorageState";
 
 const CitiesContext = createContext();
 
@@ -57,6 +56,11 @@ function CitiesProvider({ children }) {
     children: PropTypes.object,
   };
 
+  const [visitedCities, setVisitedCities] = useLocalStorageState(
+    [],
+    "visited-cities"
+  );
+
   const [{ cities, isLoading, currentCity, error }, dispatch] = useReducer(
     reducer,
     initialState
@@ -66,9 +70,7 @@ function CitiesProvider({ children }) {
     async function fetchCities() {
       dispatch({ type: "loading" });
       try {
-        const res = await fetch(`${BASE_URL}/cities`);
-        const data = await res.json();
-        dispatch({ type: "cities/loaded", payload: data });
+        dispatch({ type: "cities/loaded", payload: visitedCities });
       } catch {
         dispatch({
           type: "rejected",
@@ -77,20 +79,13 @@ function CitiesProvider({ children }) {
       }
     }
     fetchCities();
-  }, []);
+  }, [visitedCities]);
 
   async function createCity(newCity) {
     dispatch({ type: "loading" });
     try {
-      const res = await fetch(`${BASE_URL}/cities`, {
-        method: "POST",
-        body: JSON.stringify(newCity),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-      const data = await res.json();
-      dispatch({ type: "city/created", payload: data });
+      setVisitedCities((visitedCities) => [...visitedCities, newCity]);
+      dispatch({ type: "city/created", payload: newCity });
     } catch {
       dispatch({
         type: "rejected",
@@ -102,9 +97,8 @@ function CitiesProvider({ children }) {
   async function deleteCity(id) {
     dispatch({ type: "loading" });
     try {
-      await fetch(`${BASE_URL}/cities/${id}`, {
-        method: "DELETE",
-      });
+      const cities = visitedCities.filter((city) => city.id !== id);
+      setVisitedCities(cities);
       dispatch({ type: "city/deleted", payload: id });
     } catch {
       dispatch({
@@ -116,13 +110,12 @@ function CitiesProvider({ children }) {
 
   const getCity = useCallback(
     async function getCity(id) {
-      if (Number(id) === currentCity.id) return;
+      if (id === currentCity.id) return;
 
       dispatch({ type: "loading" });
       try {
-        const res = await fetch(`${BASE_URL}/cities/${id}`);
-        const data = await res.json();
-        dispatch({ type: "city/loaded", payload: data });
+        const foundCity = visitedCities.find((city) => city.id === id);
+        dispatch({ type: "city/loaded", payload: foundCity });
       } catch {
         dispatch({
           type: "rejected",
@@ -130,7 +123,7 @@ function CitiesProvider({ children }) {
         });
       }
     },
-    [currentCity.id]
+    [currentCity, visitedCities]
   );
 
   return (

@@ -11,12 +11,12 @@ export default function Homepage() {
         <h1>
           You travel the world.
           <br />
-          WorldWise keeps track of your adventures.
+          World Traveler keeps track of your adventures.
         </h1>
         <h2>
-          A world map that tracks your footsteps into every city you can think
-          of. Never forget your wonderful experiences, and show your friends how
-          you have wandered the world.
+          Track your travels and document your experiences from all around the
+          world. <br />
+          Share your exciting memories with your friends and family.
         </h2>
         <Link to="/app/cities" className="cta">
           Start tracking now

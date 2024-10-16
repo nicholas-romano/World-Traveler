@@ -6,11 +6,7 @@ function Message({ message }) {
     message: PropTypes.string,
   };
 
-  return (
-    <p className={styles.message}>
-      <span role="img">👋</span> {message}
-    </p>
-  );
+  return <p className={styles.message}>{message}</p>;
 }
 
 export default Message;
